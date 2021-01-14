@@ -7,13 +7,17 @@ import useApi from './hooks/useApi';
 import { Repo } from './typing/Repo';
 
 export function App() {
+  const DEFAULT_ALL_LANGUAGE = 'all';
   const [repos, error] = useApi('http://localhost:4000/repos/');
-  const [filterLanguage, setFilterLangauge] = useState('all');
+  const [filterLanguage, setFilterLangauge] = useState(DEFAULT_ALL_LANGUAGE);
 
   const generateLanguageFilterTags = (repositories: Repo[]) => {
-    return repositories
-      .map((repo: Repo) => repo.language)
-      .filter((language, idx, array) => array.indexOf(language) === idx);
+    return [
+      DEFAULT_ALL_LANGUAGE,
+      ...repositories
+        .map((repo: Repo) => repo.language)
+        .filter((language, idx, array) => array.indexOf(language) === idx),
+    ];
   };
 
   const sortReposByCreationDate = (
@@ -31,17 +35,16 @@ export function App() {
 
   const filterReposByLanguage = (
     repositories: Repo[],
-    language: string = 'all'
+    language: string = DEFAULT_ALL_LANGUAGE
   ) => {
-    if (language === 'all') {
+    if (language === DEFAULT_ALL_LANGUAGE) {
       return repositories;
     }
     return repositories.filter((repo: Repo) => repo.language === language);
   };
 
-  const handleLanguageSelection = (language: string) => {
+  const handleLanguageChange = (language: string) =>
     setFilterLangauge(language);
-  };
 
   const filterSortRepos = (
     repositories: Repo[],
@@ -62,7 +65,7 @@ export function App() {
         <>
           <LanguageFilter
             languages={generateLanguageFilterTags(repos)}
-            handleLanguageSelection={handleLanguageSelection}
+            handleLanguageChange={handleLanguageChange}
           />
           <RepoList repos={filterSortRepos(repos, filterLanguage, 'DESC')} />
         </>

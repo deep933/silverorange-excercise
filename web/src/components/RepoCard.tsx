@@ -9,7 +9,6 @@ function RepoCard(props: any) {
       <p>{repo.description || 'No Description'}</p>
       <div className="info">
         <div className="fork">{repo.forks} forks</div>
-
         <span className="languageTag">{repo.language}</span>
       </div>
     </div>
