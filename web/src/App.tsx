@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import './App.css';
-import FilterTag from './components/FilterTag';
+import LanguageFilter from './components/LanguageFilter';
 import RepoList from './components/RepoList';
 import useApi from './hooks/useApi';
 import { Repo } from './typing/Repo';
@@ -15,20 +15,44 @@ export function App() {
       .filter((language, idx, array) => array.indexOf(language) === idx);
   };
 
+  const sortReposByCreationDate = (
+    repositories: Repo[],
+    direction: string = 'ASC'
+  ) => {
+    return repositories.slice().sort((a: Repo, b: Repo) => {
+      if (direction === 'ASC') {
+        return Date.parse(a.created_at) > Date.parse(b.created_at) ? 1 : -1;
+      } else {
+        return Date.parse(a.created_at) < Date.parse(b.created_at) ? 1 : -1;
+      }
+    });
+  };
 
-  useEffect(() => {
-    if (repos) {
-      console.time();
-      console.log(generateLanguageFilterTags(repos));
-      console.timeEnd();
+  const filterReposByLanguage = (
+    repositories: Repo[],
+    language: string = 'all'
+  ) => {
+    if (language === 'all') {
+      return repositories;
     }
-  }, [repos]);
+    return repositories.filter((repo: Repo) => repo.language === language);
+  };
 
   return (
     <div className="App">
       <h1>Repos</h1>
       {error && <span>Something went wrong!!!</span>}
-      {repos && repos?.length > 0 && <RepoList repos={repos} />}
+      {repos && repos?.length > 0 && (
+        <>
+          <LanguageFilter languages={generateLanguageFilterTags(repos)} />
+          <RepoList
+            repos={sortReposByCreationDate(
+              filterReposByLanguage(repos),
+              'DESC'
+            )}
+          />
+        </>
+      )}
     </div>
   );
 }

@@ -31,8 +31,25 @@ h1,p{
   padding:10px 10px;
   border-radius: 5px;
 }
+.repoCard .repoCreationDate{
+  font-size: 12px;
+  padding-bottom: 10px;
+  
+}
 
 .repoList{
   list-style: none;
   width:60%;
 }
+
+.filterBar{
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.filterBar button{
+  margin:10px
+}
+

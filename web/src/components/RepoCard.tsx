@@ -4,6 +4,7 @@ function RepoCard(props: any) {
   const repo = props.repo;
   return (
     <div className="repoCard">
+      <span className="repoCreationDate">{repo.created_at}</span>
       <h1 className="repoName">{repo.name}</h1>
       <p>{repo.description || 'No Description'}</p>
       <div className="info">
