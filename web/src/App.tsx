@@ -1,25 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 
 import './App.css';
+import RepoList from './components/RepoList';
+import useApi from './hooks/useApi';
 
 export function App() {
+  const [repos, error] = useApi('http://localhost:4000/repos/');
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Repos</h1>
+      {error && <span>Something went wrong!!!</span>}
+      {repos && repos?.length > 0 && <RepoList repos={repos} />}
     </div>
   );
 }
