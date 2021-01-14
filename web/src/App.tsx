@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import './App.css';
 import LanguageFilter from './components/LanguageFilter';
@@ -8,6 +8,7 @@ import { Repo } from './typing/Repo';
 
 export function App() {
   const [repos, error] = useApi('http://localhost:4000/repos/');
+  const [filterLanguage, setFilterLangauge] = useState('all');
 
   const generateLanguageFilterTags = (repositories: Repo[]) => {
     return repositories
@@ -38,19 +39,32 @@ export function App() {
     return repositories.filter((repo: Repo) => repo.language === language);
   };
 
+  const handleLanguageSelection = (language: string) => {
+    setFilterLangauge(language);
+  };
+
+  const filterSortRepos = (
+    repositories: Repo[],
+    filterByLanguage: string,
+    sortDirection: string
+  ) => {
+    return sortReposByCreationDate(
+      filterReposByLanguage(repositories, filterByLanguage),
+      sortDirection
+    );
+  };
+
   return (
     <div className="App">
       <h1>Repos</h1>
       {error && <span>Something went wrong!!!</span>}
       {repos && repos?.length > 0 && (
         <>
-          <LanguageFilter languages={generateLanguageFilterTags(repos)} />
-          <RepoList
-            repos={sortReposByCreationDate(
-              filterReposByLanguage(repos),
-              'DESC'
-            )}
+          <LanguageFilter
+            languages={generateLanguageFilterTags(repos)}
+            handleLanguageSelection={handleLanguageSelection}
           />
+          <RepoList repos={filterSortRepos(repos, filterLanguage, 'DESC')} />
         </>
       )}
     </div>
