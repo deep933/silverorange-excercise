@@ -20,8 +20,8 @@ repos.get('/', async (_: Request, res: Response) => {
     const allRepos = [...reposFromGitHub, ...reposFromJSON].filter(
       (repo) => !repo.fork
     );
-    res.status(200).json({ status: 200, repos: allRepos }).end();
+    res.status(200).json(allRepos).end();
   } catch (error) {
-    res.status(500).json({ status: 500, error: 'Unable to fetch Data' }).end();
+    res.status(500).json({ message: 'Unable to fetch Data' }).end();
   }
 });

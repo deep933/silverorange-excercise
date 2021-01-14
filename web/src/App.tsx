@@ -8,7 +8,7 @@ import { Repo } from './typing/Repo';
 
 export function App() {
   const DEFAULT_ALL_LANGUAGE = 'all';
-  const [repos, error] = useApi('http://localhost:4000/repos/');
+  const [repos, error] = useApi('http://localhost:4000/repos/', 'repos');
   const [filterLanguage, setFilterLangauge] = useState(DEFAULT_ALL_LANGUAGE);
 
   const generateLanguageFilterTags = (repositories: Repo[]) => {

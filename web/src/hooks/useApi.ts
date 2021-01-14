@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const useApi = (api: string) => {
+const useApi = (api: string, apiFor: string) => {
   const API = api;
-  const [repos, setRepos] = useState([]);
+  const [responseData, setResponseData] = useState([]);
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -11,10 +11,10 @@ const useApi = (api: string) => {
         const response = await fetch(API);
         const data = await response.json();
 
-        if (data.status !== 200) {
-          setError(data.error);
+        if (response.status !== 200) {
+          setError(data.message);
         } else {
-          setRepos(data.repos);
+          setResponseData(data);
         }
       } catch (err) {
         setError(err);
@@ -23,7 +23,7 @@ const useApi = (api: string) => {
     getRepos();
   }, [API]);
 
-  return [repos, error];
+  return [responseData, error];
 };
 
 export default useApi;
