@@ -4,7 +4,7 @@ import RepoCard from './RepoCard';
 
 function RepoList(props: any) {
   return (
-    <div className="repo-list">
+    <div className="repoList">
       {props.repos.map((repo: Repo) => (
         <li key={repo.id}>
           <RepoCard repo={repo} />
