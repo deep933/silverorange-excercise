@@ -16,7 +16,7 @@ function RepoDetails({ repo, handleBack }: { repo: Repo; handleBack: any }) {
     : null;
   const [loading, setLoading] = useState(true);
   const [commits, commitError] = useApi(REPO_COMMITS_API, 'json');
-  const [readme] = useApi(REPO_README_API, 'raw');
+  const [readme, readmeError] = useApi(REPO_README_API, 'raw');
 
   const getMostRecentCommit = (gitCommits: any) => {
     return gitCommits
@@ -52,6 +52,15 @@ function RepoDetails({ repo, handleBack }: { repo: Repo; handleBack: any }) {
         <CommitCard commit={getMostRecentCommit(commits)} />
       ) : (
         <span>No Commits Found</span>
+      )}
+      <h2>ReadMe</h2>
+      <br />
+      {readmeError && <span>Unable to fetch Readme</span>}
+
+      {readme ? (
+        <div className="box">{readme}</div>
+      ) : (
+        <span>No Readme Found</span>
       )}
     </div>
   );
