@@ -1,18 +1,23 @@
 import React from 'react';
 import FilterButton from './FilterButton';
 
-function LanguageFilter(props: any) {
-  const languages = props.languages;
+interface PropType {
+  languages: string[];
+  handleLanguageChange: (langauge: string) => void;
+}
 
-  const handleLanguageChange = (language: string) => {
-    props.handleLanguageChange(language);
+function LanguageFilter({ languages, handleLanguageChange }: PropType) {
+  const handleOnClick = (language: string) => {
+    if (handleLanguageChange) {
+      handleLanguageChange(language);
+    }
   };
   return (
     <div className="filterBar">
       Filter by:
       {languages.map((language: string) => (
         <li key={language}>
-          <FilterButton name={language} handleOnClick={handleLanguageChange} />
+          <FilterButton name={language} handleOnClick={handleOnClick} />
         </li>
       ))}
     </div>

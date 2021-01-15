@@ -1,23 +1,29 @@
 import React from 'react';
+import { Repo } from '../typing/Repo';
 
-function RepoCard({ repo, handleListItemClick }: any) {
+interface PropType {
+  repo: Repo;
+  handleListItemClick?: (repo: Repo) => void;
+}
+
+function RepoCard({ repo, handleListItemClick }: PropType) {
+  const handleItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (handleListItemClick) {
+      handleListItemClick(repo);
+    }
+  };
   return (
-    <div
-      className="repoCard"
-      onClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (handleListItemClick) {
-          handleListItemClick(repo);
-        }
-      }}
-    >
-      <span className="repoCreationDate">{repo.created_at}</span>
-      <h1 className="repoName">{repo.name}</h1>
+    <div className="card" onClick={handleItemClick}>
+      <span className="date">{repo.created_at}</span>
+      <h1 className="card-title">{repo.name}</h1>
       <p>{repo.description || 'No Description'}</p>
       <div className="info">
         <div className="fork">{repo.forks} forks</div>
-        <span className="languageTag">{repo.language}</span>
+        <span className="tag">{repo.language || 'No Langauge'}</span>
       </div>
     </div>
   );

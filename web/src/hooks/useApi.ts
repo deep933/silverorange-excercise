@@ -1,39 +1,47 @@
 import { useEffect, useState } from 'react';
 
-const useApi = (
-  api: string | null | undefined,
-  responseType: string
-): [[], undefined | null | string] => {
-  const API = api;
-  const [responseData, setResponseData] = useState<any>([]);
-  const [error, setError] = useState();
+type ApiRequestReturnType = [boolean, any | undefined, any, () => void];
+
+interface ApiRequestType {
+  api: string | null | undefined;
+  responseBodyType?: string;
+}
+const useApi = (apiRequest: ApiRequestType): ApiRequestReturnType => {
+  const [request] = useState(apiRequest);
+  const [retry, setRetry] = useState(false);
+  const [responseData, setResponseData] = useState<any>(undefined);
+  const [error, setError] = useState<string>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const retryRequest = () => {
+    setRetry(true);
+  };
 
   useEffect(() => {
-    const getRepos = async (url: string, resType: string) => {
+    const fetchData = async (url: string, resType: string = 'json') => {
       try {
-        console.log(`calling ${url}`);
-
         const response = await fetch(url);
-
         const data =
           resType === 'json' ? await response.json() : await response.text();
-
         if (response.status !== 200) {
           setError(data.message);
         } else {
           setResponseData(data);
         }
+        setIsLoading(false);
       } catch (err) {
-        console.log(err);
         setError(err);
+        setIsLoading(false);
       }
     };
-    if (API) {
-      getRepos(API, responseType);
+    if (request.api) {
+      fetchData(request.api, request.responseBodyType);
+    } else {
+      setIsLoading(false);
     }
-  }, [API, responseType]);
+  }, [request, retry]);
 
-  return [responseData, error];
+  return [isLoading, responseData, error, retryRequest];
 };
 
 export default useApi;

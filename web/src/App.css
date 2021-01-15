@@ -4,42 +4,43 @@
   align-items: center;
   flex-direction: column;
 }
-h1,p{
-  margin: 0;
+h1,h2,h3,p{
+  margin: 5px 0;
 }
 
-.repoCard{
+.card{
   border:1px solid #EEE;
   text-align: left;
-  margin:10px;
-  padding:10px;
+  margin:10px 0px;
+  padding:20px;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
 }
 
-.repoCard h1{
+.card h1{
   margin:0;
   padding:0;
 }
 
-.repoCard .info{
+.card .info{
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
 }
-.repoCard .languageTag{
-  background:#EEE;
-  color:#111;
+.card .tag{
+  background:#EDE9FE;
+  color:#6D28D9;
   padding:10px 10px;
   border-radius: 5px;
 }
-.repoCard .repoCreationDate{
+.card .date{
   font-size: 12px;
   padding-bottom: 10px;
   
 }
-
 .repoList{
   list-style: none;
-  width:60%;
 }
 
 .filterBar{
@@ -50,6 +51,27 @@ h1,p{
 }
 
 .filterBar button{
-  margin:10px
+  margin:10px 5px;
 }
 
+.repoDetails{
+  width: 60%;
+  padding-bottom: 50px;
+}
+
+button{
+  padding: 10px 10px;
+  background:#7C3AED;
+  color:#FFF;
+  border-radius: 4px;
+  border:none;
+  cursor: pointer;
+}
+
+.box{
+  border:2px solid #EEE;
+  height:400px;
+  overflow-y: scroll;
+  padding:15px;
+  border-radius: 6px;
+}

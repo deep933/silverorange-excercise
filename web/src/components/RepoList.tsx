@@ -2,15 +2,23 @@ import React from 'react';
 import { Repo } from '../typing/Repo';
 import RepoCard from './RepoCard';
 
-function RepoList(props: any) {
-  const handleRepoClick = (repo: Repo) => {
-    props.handleRepoClick(repo);
+interface PropType {
+  repos: Repo[];
+  handleRepoClick?: any;
+}
+
+function RepoList({ repos, handleRepoClick }: PropType) {
+  const handleListItemClick = (repo: Repo) => {
+    if (handleRepoClick) {
+      handleRepoClick(repo);
+    }
   };
+
   return (
     <div className="repoList">
-      {props.repos.map((repo: Repo) => (
+      {repos.map((repo: Repo) => (
         <li key={repo.id}>
-          <RepoCard repo={repo} handleListItemClick={handleRepoClick} />
+          <RepoCard repo={repo} handleListItemClick={handleListItemClick} />
         </li>
       ))}
     </div>

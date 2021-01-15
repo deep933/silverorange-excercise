@@ -5,7 +5,7 @@ import fs from 'fs'
 import util from 'util'
 
 const readFile = util.promisify(fs.readFile);
-const API_URL = `https://api.github.com/users/silverorange/repos`
+const API_URL = `https://api.jsonbin.io/b/60011c84f98f6e35d5fcb507`
 const REPOS_FILE_PATH =path.join(__dirname,'../..','/data/repos.json') 
 
 const getListOfReposFromGitHub = async () =>{
@@ -17,6 +17,7 @@ const getListOfReposFromGitHub = async () =>{
     return repos;
     }
     catch(error){
+        console.log(error);
         throw new Error("Unable to fetch Github Repos for silverorange")
     }
 
