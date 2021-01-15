@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './App.css';
 import LanguageFilter from './components/LanguageFilter';
+import RepoDetails from './components/RepoDetails';
 import RepoList from './components/RepoList';
 import useApi from './hooks/useApi';
 import { Repo } from './typing/Repo';
 
 export function App() {
   const DEFAULT_ALL_LANGUAGE = 'all';
-  const [repos, error] = useApi('http://localhost:4000/repos/', 'repos');
-  const [filterLanguage, setFilterLangauge] = useState(DEFAULT_ALL_LANGUAGE);
+  const [repos, error] = useApi('http://localhost:4000/repos/', 'json');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [filterLanguage, setFilterLangauge] = useState<string>(
+    DEFAULT_ALL_LANGUAGE
+  );
+  const [selectedRepo, setSelectedRepo] = useState<Repo | undefined | null>();
 
   const generateLanguageFilterTags = (repositories: Repo[]) => {
     return [
@@ -57,19 +62,44 @@ export function App() {
     );
   };
 
+  const handleRepoClick = (repository: Repo) => {
+    setSelectedRepo(repository);
+  };
+
+  useEffect(() => {
+    console.log(repos);
+    if (repos && repos?.length > 0) {
+      setLoading(false);
+    }
+    if (error) {
+      setLoading(false);
+    }
+  }, [repos, error]);
+
   return (
     <div className="App">
       <h1>Repos</h1>
+      {loading && <span>Loading Repos ....</span>}
       {error && <span>Something went wrong!!!</span>}
-      {repos && repos?.length > 0 && (
-        <>
-          <LanguageFilter
-            languages={generateLanguageFilterTags(repos)}
-            handleLanguageChange={handleLanguageChange}
+      {repos &&
+        repos?.length > 0 &&
+        (selectedRepo != null ? (
+          <RepoDetails
+            repo={selectedRepo}
+            handleBack={() => setSelectedRepo(null)}
           />
-          <RepoList repos={filterSortRepos(repos, filterLanguage, 'DESC')} />
-        </>
-      )}
+        ) : (
+          <>
+            <LanguageFilter
+              languages={generateLanguageFilterTags(repos)}
+              handleLanguageChange={handleLanguageChange}
+            />
+            <RepoList
+              repos={filterSortRepos(repos, filterLanguage, 'DESC')}
+              handleRepoClick={handleRepoClick}
+            />
+          </>
+        ))}
     </div>
   );
 }

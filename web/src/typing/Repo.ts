@@ -35,6 +35,8 @@ export interface Repo {
   ssh_url: string;
   clone_url: string;
   svn_url: string;
+  has_wiki:boolean;
+  commits_url:string;
   homepage: string;
   size: number;
   stargazers_count: number;

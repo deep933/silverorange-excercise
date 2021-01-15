@@ -1,9 +1,17 @@
 import React from 'react';
 
-function RepoCard(props: any) {
-  const repo = props.repo;
+function RepoCard({ repo, handleListItemClick }: any) {
   return (
-    <div className="repoCard">
+    <div
+      className="repoCard"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (handleListItemClick) {
+          handleListItemClick(repo);
+        }
+      }}
+    >
       <span className="repoCreationDate">{repo.created_at}</span>
       <h1 className="repoName">{repo.name}</h1>
       <p>{repo.description || 'No Description'}</p>

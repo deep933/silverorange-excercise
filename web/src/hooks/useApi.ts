@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
 
-const useApi = (api: string, apiFor: string) => {
+const useApi = (
+  api: string | null | undefined,
+  responseType: string
+): [[], undefined | null | string] => {
   const API = api;
-  const [responseData, setResponseData] = useState([]);
+  const [responseData, setResponseData] = useState<any>([]);
   const [error, setError] = useState();
 
   useEffect(() => {
-    const getRepos = async () => {
+    const getRepos = async (url: string, resType: string) => {
       try {
-        const response = await fetch(API);
-        const data = await response.json();
+        console.log(`calling ${url}`);
+
+        const response = await fetch(url);
+
+        const data =
+          resType === 'json' ? await response.json() : await response.text();
 
         if (response.status !== 200) {
           setError(data.message);
@@ -17,11 +24,14 @@ const useApi = (api: string, apiFor: string) => {
           setResponseData(data);
         }
       } catch (err) {
+        console.log(err);
         setError(err);
       }
     };
-    getRepos();
-  }, [API]);
+    if (API) {
+      getRepos(API, responseType);
+    }
+  }, [API, responseType]);
 
   return [responseData, error];
 };
