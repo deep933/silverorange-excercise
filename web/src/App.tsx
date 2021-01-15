@@ -5,6 +5,7 @@ import RepoHome from './components/RepoHome';
 import useApi from './hooks/useApi';
 import { Repo } from './typing/Repo';
 
+/* Render RepoHome and RepoDetails conditionally */
 export function App() {
   const [isLoading, repos, error] = useApi({
     api: 'http://localhost:4000/repos/',
@@ -33,7 +34,9 @@ export function App() {
         <RepoHome repos={repos} handleRepoClick={handleRepoClick} />
       )}
       {!isLoading && error && (
-        <span className="error">Something Went Wrong at Back!!!</span>
+        <span className="error">
+          Something Went Wrong Please Try again later!!!
+        </span>
       )}
     </div>
   );

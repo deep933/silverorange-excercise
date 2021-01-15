@@ -22,6 +22,9 @@ repos.get('/', async (_: Request, res: Response) => {
     );
     res.status(200).json(allRepos).end();
   } catch (error) {
-    res.status(500).json({ message: 'Unable to fetch Data',error:error }).end();
+    res
+      .status(500)
+      .json({ message: 'Unable to fetch Data', error: error })
+      .end();
   }
 });

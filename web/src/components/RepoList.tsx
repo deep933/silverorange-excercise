@@ -7,6 +7,7 @@ interface PropType {
   handleRepoClick?: any;
 }
 
+/* display list of repos */
 function RepoList({ repos, handleRepoClick }: PropType) {
   const handleListItemClick = (repo: Repo) => {
     if (handleRepoClick) {
